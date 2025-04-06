@@ -1,0 +1,15 @@
+services:
+  web-gestao-db:
+    image: postgres:15
+    container_name: web-gestao-db
+    environment:
+      POSTGRES_DB: webgestao
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

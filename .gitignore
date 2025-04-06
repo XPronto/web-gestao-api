@@ -35,3 +35,6 @@ build/
 # NODE
 node_modules/
 package-lock.json
+
+#ENV
+.env
