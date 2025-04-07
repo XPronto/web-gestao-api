@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WebGestaoApplication {
 
 	public static void main(String[] args) {
+        System.out.println("Teste");
 		SpringApplication.run(WebGestaoApplication.class, args);
 	}
 
