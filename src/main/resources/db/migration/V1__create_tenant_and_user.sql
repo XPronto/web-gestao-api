@@ -29,9 +29,9 @@ CREATE TABLE tenant_address (
     FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
-CREATE TABLE user (
+CREATE TABLE "user" (
     id uuid PRIMARY KEY,
-    tenant_id INT NOT NULL,
+    tenant_id uuid NOT NULL,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     first_name VARCHAR(255) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE user_permission_set (
     permission_set_id uuid NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, permission_set_id),
-    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (user_id) REFERENCES "user"(id),
     FOREIGN KEY (permission_set_id) REFERENCES permission_set(id)
 );
 
@@ -70,8 +70,8 @@ CREATE INDEX idx_tenant_permission_set_tenant_id ON tenant_permission_set(tenant
 CREATE INDEX idx_tenant_permission_set_permission_set_id ON tenant_permission_set(permission_set_id);
 CREATE INDEX idx_user_permission_set_user_id ON user_permission_set(user_id);
 CREATE INDEX idx_user_permission_set_permission_set_id ON user_permission_set(permission_set_id);
-CREATE INDEX idx_user_tenant_id ON user(tenant_id);
-CREATE INDEX idx_user_username ON user(username);
+CREATE INDEX idx_user_tenant_id ON "user"(tenant_id);
+CREATE INDEX idx_user_username ON "user"(username);
 CREATE INDEX idx_tenant_name ON tenant(name);
 CREATE INDEX idx_tenant_address_tenant_id ON tenant_address(tenant_id);
 CREATE INDEX idx_tenant_address_address_id ON tenant_address(address_id);
