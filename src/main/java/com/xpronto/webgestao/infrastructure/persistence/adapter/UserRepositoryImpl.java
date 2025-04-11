@@ -24,4 +24,9 @@ public class UserRepositoryImpl implements UserRepository {
         return UserMapper.toDomain(savedUserEntity);
     }
 
+    @Override
+    public Boolean existsByEmail(String email) {
+        return jpaUserRepository.findByEmail(email).isPresent();
+    }
+
 }

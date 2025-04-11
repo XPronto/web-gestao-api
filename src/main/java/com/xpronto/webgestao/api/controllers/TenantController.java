@@ -4,11 +4,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xpronto.webgestao.api.dtos.AddressDTO;
+import com.xpronto.webgestao.api.dtos.UserDTO;
 import com.xpronto.webgestao.api.dtos.request.CreateTenantRequest;
 import com.xpronto.webgestao.domain.model.Tenant;
 import com.xpronto.webgestao.domain.usecases.createtenant.CreateTenantCommand;
 import com.xpronto.webgestao.domain.usecases.createtenant.CreateTenantUseCase;
 import com.xpronto.webgestao.domain.usecases.createtenant.CreateTenantCommand.AddressData;
+import com.xpronto.webgestao.domain.usecases.createtenant.CreateTenantCommand.UserData;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,11 +27,16 @@ public class TenantController extends BaseController {
     @PostMapping
     public ResponseEntity<Void> createTenant(@RequestBody CreateTenantRequest body) throws Exception {
         AddressDTO addressDTO = body.getAddress();
-        var addressData = new AddressData(addressDTO.getStreet(), addressDTO.getNumber(),
-                addressDTO.getNeighborhood(), addressDTO.getCity(), addressDTO.getState(), addressDTO.getZipCode(),
-                addressDTO.getLatitude(), addressDTO.getLongitude());
+        UserDTO userDTO = body.getUser();
 
-        var createTenantCommand = new CreateTenantCommand(body.getTenantName(), body.getAdminName(), body.getAdminEmail(), body.getAdminPassword(), addressData);
+        var addressData = new AddressData(addressDTO.getStreet(), addressDTO.getNumber(), addressDTO.getNeighborhood(),
+                addressDTO.getCity(), addressDTO.getState(), addressDTO.getZipCode());
+        var userData = new UserData(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
+                userDTO.getPassword());
+
+        var createTenantCommand = new CreateTenantCommand(body.getTenantName(), body.getDocument(),
+                body.getContactEmail(), body.getContactPhone(), body.getOpeningTime(), body.getClosingTime(),
+                body.getLegalName(), body.getWebsite(), body.getLogoUrl(), addressData, userData);
 
         Tenant tenant = createTenantUseCase.execute(createTenantCommand);
 
