@@ -24,4 +24,9 @@ public class TenantRepositoryImpl implements TenantRepository {
         return TenantMapper.toDomain(savedTenantEntity);
     }
 
+    @Override
+    public boolean existsByDocument(String document) {
+        return jpaTenantRepository.findByDocument(document).isPresent();
+    }
+
 }

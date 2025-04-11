@@ -1,0 +1,24 @@
+ALTER TABLE tenants
+    ALTER COLUMN name SET NOT NULL,
+    ADD COLUMN legal_name VARCHAR(255),
+    ADD COLUMN document VARCHAR(50) NOT NULL,
+    ADD COLUMN document_type VARCHAR(10) NOT NULL,
+    ADD COLUMN email VARCHAR(255) NOT NULL,
+    ADD COLUMN phone VARCHAR(50) NOT NULL,
+    ADD COLUMN website VARCHAR(255),
+    ADD COLUMN logo_url TEXT,
+    ADD COLUMN opening_time TIME NOT NULL,
+    ADD COLUMN closing_time TIME NOT NULL,
+    ADD COLUMN active BOOLEAN DEFAULT TRUE,
+    ALTER COLUMN street SET NOT NULL,
+    ALTER COLUMN number SET NOT NULL,
+    ALTER COLUMN neighborhood SET NOT NULL,
+    ALTER COLUMN city SET NOT NULL,
+    ALTER COLUMN state SET NOT NULL,
+    ALTER COLUMN zip_code SET NOT NULL,
+    ADD CONSTRAINT chk_document_type CHECK (document_type IN ('CPF', 'CNPJ'));
+
+ALTER TABLE users
+    DROP COLUMN name,
+    ADD COLUMN first_name VARCHAR(255) NOT NULL,
+    ADD COLUMN last_name VARCHAR(255) NOT NULL;

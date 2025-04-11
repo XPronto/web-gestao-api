@@ -6,25 +6,27 @@ import java.util.UUID;
 
 public class User {
     private UUID id;
-    private String name;
+    private String firtstName;
+    private String lastName;
     private String email;
     private String passwordHash;
     private Tenant tenant;
     private List<PermissionSet> permissionSets;
     private OffsetDateTime createdAt;
 
-    public User() {
-    }
-
-    public User(UUID id, String name, String email, String passwordHash, Tenant tenant,
+    public User(UUID id, String firtstName, String lastName, String email, String passwordHash, Tenant tenant,
             List<PermissionSet> permissionSets, OffsetDateTime createdAt) {
         this.id = id;
-        this.name = name;
+        this.firtstName = firtstName;
+        this.lastName = lastName;
         this.email = email;
         this.passwordHash = passwordHash;
         this.tenant = tenant;
         this.permissionSets = permissionSets;
         this.createdAt = createdAt;
+    }
+
+    public User() {
     }
 
     public UUID getId() {
@@ -33,14 +35,6 @@ public class User {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
@@ -81,5 +75,21 @@ public class User {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getFirtstName() {
+        return firtstName;
+    }
+
+    public void setFirtstName(String firtstName) {
+        this.firtstName = firtstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

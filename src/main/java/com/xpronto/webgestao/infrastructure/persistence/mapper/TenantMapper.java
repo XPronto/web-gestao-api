@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.xpronto.webgestao.domain.model.Address;
 import com.xpronto.webgestao.domain.model.Tenant;
+import com.xpronto.webgestao.domain.model.valueobject.Document;
 import com.xpronto.webgestao.infrastructure.persistence.entity.AddressEmbeddable;
 import com.xpronto.webgestao.infrastructure.persistence.entity.TenantEntity;
 
@@ -29,20 +30,29 @@ public class TenantMapper {
                     longitude);
         }
 
-        return new Tenant(
-                entity.getId(),
-                entity.getName(),
-                address,
-                null,
-                null,
-                entity.getCreatedAt());
+        Document document = Document.create(entity.getDocument(), entity.getDocumentType());
+
+        return new Tenant(entity.getId(), entity.getName(), document, entity.getEmail(),
+                entity.getPhone(), entity.getOpeningTime(), entity.getClosingTime(), entity.getLegalName(),
+                entity.getWebsite(), entity.getLogoUrl(), address, null, null, entity.getCreatedAt());
     }
 
     public static TenantEntity toEntity(Tenant tenant) {
+        Document document = tenant.getDocument();
+
         TenantEntity entity = new TenantEntity();
         entity.setId(tenant.getId());
         entity.setName(tenant.getName());
         entity.setCreatedAt(tenant.getCreatedAt());
+        entity.setDocument(document.getNumber());
+        entity.setDocumentType(document.getType());
+        entity.setEmail(tenant.getContactEmail());
+        entity.setPhone(tenant.getContactPhone());
+        entity.setOpeningTime(tenant.getOpeningTime());
+        entity.setClosingTime(tenant.getClosingTime());
+        entity.setLegalName(tenant.getLegalName());
+        entity.setWebsite(tenant.getWebsite());
+        entity.setLogoUrl(tenant.getLogoUrl());
 
         Address addr = tenant.getAddress();
 

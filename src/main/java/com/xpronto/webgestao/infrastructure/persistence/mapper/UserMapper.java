@@ -15,7 +15,8 @@ public class UserMapper {
 
         return new User(
                 entity.getId(),
-                entity.getName(),
+                entity.getFirstName(),
+                entity.getLastName(),
                 entity.getEmail(),
                 entity.getPasswordHash(),
                 TenantMapper.toDomain(entity.getTenant()),
@@ -26,7 +27,8 @@ public class UserMapper {
     public static UserEntity toEntity(User user) {
         UserEntity entity = new UserEntity();
         entity.setId(user.getId());
-        entity.setName(user.getName());
+        entity.setFirstName(user.getFirtstName());
+        entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
         entity.setPasswordHash(user.getPasswordHash());
         entity.setTenant(TenantMapper.toEntity(user.getTenant()));
