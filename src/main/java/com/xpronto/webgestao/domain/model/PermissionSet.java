@@ -1,20 +1,20 @@
 package com.xpronto.webgestao.domain.model;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public class PermissionSet {
     private UUID id;
     private String name;
     private Tenant tenant;
-    private Set<Permission> permissions;
+    private List<Permission> permissions;
     private OffsetDateTime createdAt;
 
     public PermissionSet() {
     }
 
-    public PermissionSet(UUID id, String name, Tenant tenant, Set<Permission> permissions, OffsetDateTime createdAt) {
+    public PermissionSet(UUID id, String name, Tenant tenant, List<Permission> permissions, OffsetDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.tenant = tenant;
@@ -46,11 +46,11 @@ public class PermissionSet {
         this.tenant = tenant;
     }
 
-    public Set<Permission> getPermissions() {
+    public List<Permission> getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Set<Permission> permissions) {
+    public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
 

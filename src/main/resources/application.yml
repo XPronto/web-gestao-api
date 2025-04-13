@@ -31,3 +31,11 @@ spring:
 api:
     api-keys:
         location-iq-api-key: ${LOCATION_IQ_API_KEY:test}
+    jwt:
+        access-token:
+            secret: ${JWT_ACCESS_TOKEN_SECRET:access-secret}
+            expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:15}
+        refresh-token:
+            secret: ${JWT_REFRESH_TOKEN_SECRET:refresh-secret}
+            expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:7}
+

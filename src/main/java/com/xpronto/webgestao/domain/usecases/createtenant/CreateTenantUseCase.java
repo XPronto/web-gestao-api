@@ -1,7 +1,6 @@
 package com.xpronto.webgestao.domain.usecases.createtenant;
 
 import java.time.OffsetDateTime;
-import java.util.HashSet;
 import java.util.List;
 
 import com.xpronto.webgestao.domain.model.Address;
@@ -14,6 +13,7 @@ import com.xpronto.webgestao.domain.repositories.PermissionRepository;
 import com.xpronto.webgestao.domain.repositories.PermissionSetRepository;
 import com.xpronto.webgestao.domain.repositories.TenantRepository;
 import com.xpronto.webgestao.domain.repositories.UserRepository;
+import com.xpronto.webgestao.domain.services.EncoderService;
 import com.xpronto.webgestao.domain.services.geolocation.GeocodingService;
 import com.xpronto.webgestao.domain.services.geolocation.Geolocation;
 import com.xpronto.webgestao.domain.usecases.UseCase;
@@ -26,18 +26,21 @@ public class CreateTenantUseCase implements UseCase<CreateTenantCommand, Tenant>
     private final TenantRepository tenantRepository;
     private final PermissionRepository permissionRepository;
     private final GeocodingService geocodingService;
+    private final EncoderService encoderService;
 
     public CreateTenantUseCase(
             UserRepository userRepository,
             PermissionSetRepository permissionSetRepository,
             TenantRepository tenantRepository,
             PermissionRepository permissionRepository,
-            GeocodingService geocodingService) {
+            GeocodingService geocodingService,
+            EncoderService encoderService) {
         this.userRepository = userRepository;
         this.permissionSetRepository = permissionSetRepository;
         this.tenantRepository = tenantRepository;
         this.permissionRepository = permissionRepository;
         this.geocodingService = geocodingService;
+        this.encoderService = encoderService;
     }
 
     @Override
@@ -85,16 +88,18 @@ public class CreateTenantUseCase implements UseCase<CreateTenantCommand, Tenant>
         PermissionSet adminPermissionSet = new PermissionSet();
         adminPermissionSet.setName("Administrador do Sistema");
         adminPermissionSet.setTenant(createdTenant);
-        adminPermissionSet.setPermissions(new HashSet<>(permissions));
+        adminPermissionSet.setPermissions(permissions);
         adminPermissionSet.setCreatedAt(OffsetDateTime.now());
 
         PermissionSet createdPermissionSet = permissionSetRepository.save(adminPermissionSet);
+
+        String encodedPassword = encoderService.encode(adminData.getPassword());
 
         User user = new User();
         user.setFirtstName(adminData.getFirstName());
         user.setLastName(adminData.getLastName());
         user.setEmail(adminData.getEmail());
-        user.setPasswordHash(adminData.getPassword());
+        user.setPasswordHash(encodedPassword);
         user.setTenant(createdTenant);
         user.setPermissionSets(List.of(createdPermissionSet));
         user.setCreatedAt(OffsetDateTime.now());

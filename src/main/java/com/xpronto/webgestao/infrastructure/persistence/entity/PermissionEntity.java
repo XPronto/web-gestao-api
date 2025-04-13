@@ -1,8 +1,8 @@
 package com.xpronto.webgestao.infrastructure.persistence.entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.xpronto.webgestao.utils.GeneratedUuidV7;
@@ -35,5 +35,5 @@ public class PermissionEntity implements Serializable {
     private String description;
 
     @ManyToMany(mappedBy = "permissions")
-    private Set<PermissionSetEntity> permissionSets = new HashSet<>();
+    private List<PermissionSetEntity> permissionSets = new ArrayList<>();
 }

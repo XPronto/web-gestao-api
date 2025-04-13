@@ -1,13 +1,17 @@
 package com.xpronto.webgestao.infrastructure.persistence.entity;
 
-import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import com.xpronto.webgestao.domain.model.User;
 import com.xpronto.webgestao.utils.GeneratedUuidV7;
 
 import jakarta.persistence.Column;
@@ -29,7 +33,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity implements Serializable {
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedUuidV7
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -52,9 +56,26 @@ public class UserEntity implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "user_permission_sets", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_set_id"))
-    private Set<PermissionSetEntity> permissionSets = new HashSet<>();
+    private List<PermissionSetEntity> permissionSets = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<String> permissions = User.mapPermissionsCodes(permissionSets);
+
+        return permissions.stream().map(code -> new SimpleGrantedAuthority(code)).toList();
+    }
+
+    @Override
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

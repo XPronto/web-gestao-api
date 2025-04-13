@@ -2,8 +2,8 @@ package com.xpronto.webgestao.infrastructure.persistence.entity;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,10 +43,10 @@ public class PermissionSetEntity implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "permission_set_permissions", joinColumns = @JoinColumn(name = "permission_set_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private Set<PermissionEntity> permissions = new HashSet<>();
+    private List<PermissionEntity> permissions = new ArrayList<>();
 
     @ManyToMany(mappedBy = "permissionSets")
-    private Set<UserEntity> users = new HashSet<>();
+    private List<UserEntity> users = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

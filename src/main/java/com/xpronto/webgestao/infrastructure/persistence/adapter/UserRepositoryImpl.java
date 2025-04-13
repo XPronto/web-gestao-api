@@ -29,4 +29,11 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaUserRepository.findByEmail(email).isPresent();
     }
 
+    @Override
+    public User findByEmail(String email) {
+        return jpaUserRepository.findByEmail(email)
+                .map(UserMapper::toDomain)
+                .orElse(null);
+    }
+
 }
