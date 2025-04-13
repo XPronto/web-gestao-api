@@ -1,4 +1,4 @@
-package com.xpronto.webgestao.infrastructure.services.geolocation;
+package com.xpronto.webgestao.infrastructure.services;
 
 import java.util.List;
 

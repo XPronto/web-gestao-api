@@ -1,6 +1,5 @@
 package com.xpronto.webgestao.infrastructure.persistence.mapper;
 
-import java.util.HashSet;
 import java.util.List;
 
 import com.xpronto.webgestao.domain.model.Permission;
@@ -17,7 +16,7 @@ public class PermissionSetMapper {
                 entity.getId(),
                 entity.getName(),
                 TenantMapper.toDomain(entity.getTenant()),
-                new HashSet<>(permissions),
+                permissions,
                 entity.getCreatedAt());
     }
 
@@ -26,10 +25,9 @@ public class PermissionSetMapper {
         entity.setId(domain.getId());
         entity.setName(domain.getName());
         entity.setTenant(TenantMapper.toEntity(domain.getTenant()));
-        entity.setPermissions(new HashSet<>(
-                domain.getPermissions().stream()
-                        .map(PermissionMapper::toEntity)
-                        .toList()));
+        entity.setPermissions(domain.getPermissions().stream()
+                .map(PermissionMapper::toEntity)
+                .toList());
         entity.setCreatedAt(domain.getCreatedAt());
         return entity;
     }

@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.xpronto.webgestao.infrastructure.persistence.entity.PermissionSetEntity;
+
 public class User {
     private UUID id;
     private String firtstName;
@@ -91,5 +93,12 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public static List<String> mapPermissionsCodes(List<PermissionSetEntity> permissionSets) {
+        return permissionSets.stream()
+                .flatMap((permissionSet -> permissionSet.getPermissions().stream()
+                        .map(permission -> permission.getCode())))
+                .toList();
     }
 }

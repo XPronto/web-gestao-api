@@ -1,5 +1,27 @@
-{"properties": [{
-  "name": "api.api-keys.location-iq-api-key",
-  "type": "java.lang.String",
-  "description": "A description for 'api.api-keys.location-iq-api-key'"
-}]}
+{"properties": [
+  {
+    "name": "api.api-keys.location-iq-api-key",
+    "type": "java.lang.String",
+    "description": "LocationIQ service api key."
+  },
+  {
+    "name": "api.jwt.access-token.secret",
+    "type": "java.lang.String",
+    "description": "JWT access token secret."
+  },
+  {
+    "name": "api.jwt.access-token.expiration",
+    "type": "java.lang.String",
+    "description": "JWT access token expiration (IN MINUTES)."
+  },
+  {
+    "name": "api.jwt.refresh-token.secret",
+    "type": "java.lang.String",
+    "description": "JWT refresh token secret."
+  },
+  {
+    "name": "api.jwt.refresh-token.expiration",
+    "type": "java.lang.String",
+    "description": "JWT refresh token expiration (IN DAYS)."
+  }
+]}

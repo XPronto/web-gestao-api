@@ -1,6 +1,5 @@
 package com.xpronto.webgestao.infrastructure.persistence.mapper;
 
-import java.util.HashSet;
 import java.util.List;
 
 import com.xpronto.webgestao.domain.model.PermissionSet;
@@ -32,9 +31,9 @@ public class UserMapper {
         entity.setEmail(user.getEmail());
         entity.setPasswordHash(user.getPasswordHash());
         entity.setTenant(TenantMapper.toEntity(user.getTenant()));
-        entity.setPermissionSets(new HashSet<>(user.getPermissionSets().stream()
+        entity.setPermissionSets(user.getPermissionSets().stream()
                 .map(PermissionSetMapper::toEntity)
-                .toList()));
+                .toList());
         entity.setCreatedAt(user.getCreatedAt());
         return entity;
     }
