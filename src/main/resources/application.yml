@@ -27,6 +27,7 @@ spring:
                 config:
                     location-iq-api:
                         url: ${LOCATION_IQ_API_URL:test}
+                        error-decoder: com.xpronto.webgestao.infrastructure.config.integrations.IntegrationsErrorDecoder
 
 api:
     api-keys:
@@ -38,4 +39,3 @@ api:
         refresh-token:
             secret: ${JWT_REFRESH_TOKEN_SECRET:refresh-secret}
             expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:7}
-
