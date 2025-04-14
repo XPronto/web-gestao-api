@@ -3,6 +3,7 @@ package com.xpronto.webgestao.domain.usecases.createtenant;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.xpronto.webgestao.domain.errors.ConflictException;
 import com.xpronto.webgestao.domain.model.Address;
 import com.xpronto.webgestao.domain.model.Permission;
 import com.xpronto.webgestao.domain.model.PermissionSet;
@@ -48,13 +49,11 @@ public class CreateTenantUseCase implements UseCase<CreateTenantCommand, Tenant>
         Document document = Document.create(command.getDocument(), Document.verifyType(command.getDocument()));
         UserData adminData = command.getUser();
 
-        if (userRepository.existsByEmail(adminData.getEmail())) {
-            throw new Exception("Email already registered");
-        }
+        if (userRepository.existsByEmail(adminData.getEmail()))
+            throw new ConflictException("Email already registered.");
 
-        if (tenantRepository.existsByDocument(document.getNumber())) {
-            throw new Exception("Document already registered");
-        }
+        if (tenantRepository.existsByDocument(document.getNumber()))
+            throw new ConflictException("Document already registered.");
 
         AddressData addressData = command.getAddress();
 

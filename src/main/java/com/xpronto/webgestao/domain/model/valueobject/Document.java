@@ -2,18 +2,18 @@ package com.xpronto.webgestao.domain.model.valueobject;
 
 import java.util.InputMismatchException;
 
+import com.xpronto.webgestao.domain.errors.UnprocessableEntityException;
+
 public class Document {
     private final String number;
     private final DocumentType type;
 
     private Document(String number, DocumentType type) {
-        if (type.equals(DocumentType.CPF) && !isValidCPF(number)) {
-            throw new IllegalArgumentException("Invalid CPF");
-        }
+        if (type.equals(DocumentType.CPF) && !isValidCPF(number))
+            throw new UnprocessableEntityException("Invalid CPF.");
 
-        if (type.equals(DocumentType.CNPJ) && !isValidCNPJ(number)) {
-            throw new IllegalArgumentException("Invalid CNPJ");
-        }
+        if (type.equals(DocumentType.CNPJ) && !isValidCNPJ(number))
+            throw new UnprocessableEntityException("Invalid CNPJ.");
 
         this.number = number;
         this.type = type;
@@ -140,7 +140,7 @@ public class Document {
                 return DocumentType.CNPJ;
 
             default:
-                return null;
+                throw new UnprocessableEntityException("Invalid document.");
         }
     }
 

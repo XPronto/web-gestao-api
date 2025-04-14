@@ -1,5 +1,6 @@
 package com.xpronto.webgestao.domain.usecases.signin;
 
+import com.xpronto.webgestao.domain.errors.BadRequestException;
 import com.xpronto.webgestao.domain.model.User;
 import com.xpronto.webgestao.domain.repositories.UserRepository;
 import com.xpronto.webgestao.domain.services.EncoderService;
@@ -23,10 +24,10 @@ public class SignInUseCase implements UseCase<SignInCommand, Tokens> {
         User user = userRepository.findByEmail(command.getEmail());
 
         if (user == null)
-            throw new Exception("Incorrect email or password");
+            throw new BadRequestException("Incorrect email or password.");
 
         if (!encoderService.matches(command.getPassword(), user.getPasswordHash()))
-            throw new Exception("Incorrect email or password");
+            throw new BadRequestException("Incorrect email or password.");
 
         return jwtService.signAuthTokens(user);
     }
