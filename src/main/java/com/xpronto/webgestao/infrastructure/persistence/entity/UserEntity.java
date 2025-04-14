@@ -11,7 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.xpronto.webgestao.domain.model.User;
 import com.xpronto.webgestao.utils.GeneratedUuidV7;
 
 import jakarta.persistence.Column;
@@ -64,8 +63,10 @@ public class UserEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<String> permissions = User.mapPermissionsCodes(permissionSets);
+        return mapAuthorities(UserEntity.mapPermissionsCodes(permissionSets));
+    }
 
+    public static Collection<? extends GrantedAuthority> mapAuthorities(List<String> permissions) {
         return permissions.stream().map(code -> new SimpleGrantedAuthority(code)).toList();
     }
 
@@ -77,5 +78,12 @@ public class UserEntity implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    private static List<String> mapPermissionsCodes(List<PermissionSetEntity> permissionSets) {
+        return permissionSets.stream()
+                .flatMap((permissionSet -> permissionSet.getPermissions().stream()
+                        .map(permission -> permission.getCode())))
+                .toList();
     }
 }

@@ -1,5 +1,7 @@
 package com.xpronto.webgestao.infrastructure.persistence.adapter;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
 import com.xpronto.webgestao.domain.model.User;
@@ -32,6 +34,13 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User findByEmail(String email) {
         return jpaUserRepository.findByEmail(email)
+                .map(UserMapper::toDomain)
+                .orElse(null);
+    }
+
+    @Override
+    public User findById(UUID id) {
+        return jpaUserRepository.findById(id)
                 .map(UserMapper::toDomain)
                 .orElse(null);
     }
