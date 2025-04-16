@@ -2,6 +2,8 @@ package com.xpronto.webgestao.api.exceptionhandler;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -9,6 +11,7 @@ import com.xpronto.webgestao.domain.errors.ApiException;
 import com.xpronto.webgestao.domain.errors.ExceptionResponse;
 import com.xpronto.webgestao.domain.errors.ForbiddenException;
 import com.xpronto.webgestao.domain.errors.InternalException;
+import com.xpronto.webgestao.domain.errors.UnprocessableEntityException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -24,6 +27,15 @@ public class GlobalExceptionHandler {
         var apiException = new ForbiddenException(exception.getMessage());
 
         return ResponseEntity.status(apiException.getStatus()).body(apiException.mapToResponse(request.getServletPath()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    private ResponseEntity<ExceptionResponse> argumentNotValidHandler(MethodArgumentNotValidException exception, HttpServletRequest request) {
+        FieldError fieldError = exception.getFieldError();
+
+        var exceptionApi = new UnprocessableEntityException(fieldError != null ? fieldError.getDefaultMessage() : "Error on validating field.");
+
+        return ResponseEntity.status(exceptionApi.getStatus()).body(exceptionApi.mapToResponse(request.getServletPath()));
     }
 
     @ExceptionHandler(Exception.class)

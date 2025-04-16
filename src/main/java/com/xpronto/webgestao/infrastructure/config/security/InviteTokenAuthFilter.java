@@ -22,23 +22,22 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class AuthenticationFilter extends OncePerRequestFilter {
+public class InviteTokenAuthFilter extends OncePerRequestFilter {
+
     private final JwtService jwtService;
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) throws ServletException {
-        String path = request.getServletPath();
-
-        return path.equals("/api/auth/refresh-token") || path.equals("/api/users/confirm");
+        return !(request.getMethod().equalsIgnoreCase("POST") && request.getServletPath().equals("/api/users/confirm"));
     }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        Optional<String> accessToken = FilterHelper.extractToken(request);
+        Optional<String> token = FilterHelper.extractToken(request);
 
-        if (accessToken.isPresent()) {
+        if (token.isPresent()) {
             try {
-                UserPayload payload = jwtService.verify(accessToken.get(), TokenType.ACCESS_TOKEN);
+                UserPayload payload = jwtService.verify(token.get(), TokenType.INVITE_TOKEN);
 
                 if (payload != null) {
                     var auth = new UsernamePasswordAuthenticationToken(payload, null, payload.getAuthorities());
@@ -53,4 +52,5 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

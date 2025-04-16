@@ -50,4 +50,11 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaUserRepository.findByEmail(email, tenantId).isPresent();
     }
 
+    @Override
+    public User findById(UUID id, UUID tenantId) {
+        return jpaUserRepository.findById(id, tenantId)
+                .map(UserMapper::toDomain)
+                .orElse(null);
+    }
+
 }

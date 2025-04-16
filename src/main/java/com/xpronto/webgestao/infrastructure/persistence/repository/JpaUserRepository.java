@@ -14,4 +14,7 @@ public interface JpaUserRepository extends JpaRepository<UserEntity, UUID> {
 
     @Query("SELECT u FROM UserEntity u WHERE u.email = :email AND u.tenant.id = :tenantId")
     Optional<UserEntity> findByEmail(@Param("email") String email, @Param("tenantId") UUID tenantId);
+
+    @Query("SELECT u FROM UserEntity u WHERE u.id = :id AND u.tenant.id = :tenantId")
+    Optional<UserEntity> findById(@Param("id") UUID id, @Param("tenantId") UUID tenantId);
 }
