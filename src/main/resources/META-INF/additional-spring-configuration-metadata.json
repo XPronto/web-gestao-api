@@ -23,5 +23,20 @@
     "name": "api.jwt.refresh-token.expiration",
     "type": "java.lang.String",
     "description": "JWT refresh token expiration (IN DAYS)."
+  },
+  {
+    "name": "api.jwt.invite-token.secret",
+    "type": "java.lang.String",
+    "description": "JWT invite token secret."
+  },
+  {
+    "name": "api.jwt.invite-token.expiration",
+    "type": "java.lang.String",
+    "description": "JWT invite token expiration (IN MINUTES)."
+  },
+  {
+    "name": "api.client-url",
+    "type": "java.lang.String",
+    "description": "Front-end base url."
   }
 ]}

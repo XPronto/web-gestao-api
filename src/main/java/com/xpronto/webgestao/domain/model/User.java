@@ -1,6 +1,7 @@
 package com.xpronto.webgestao.domain.model;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,10 +10,24 @@ public class User {
     private String firtstName;
     private String lastName;
     private String email;
+    private boolean verified;
     private String passwordHash;
     private Tenant tenant;
-    private List<PermissionSet> permissionSets;
+    private List<PermissionSet> permissionSets = new ArrayList<>();
     private OffsetDateTime createdAt;
+
+    public User(UUID id, String firtstName, String lastName, String email, boolean verified, String passwordHash,
+            Tenant tenant, List<PermissionSet> permissionSets, OffsetDateTime createdAt) {
+        this.id = id;
+        this.firtstName = firtstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.verified = verified;
+        this.passwordHash = passwordHash;
+        this.tenant = tenant;
+        this.permissionSets = permissionSets;
+        this.createdAt = createdAt;
+    }
 
     public User(UUID id, String firtstName, String lastName, String email, String passwordHash, Tenant tenant,
             List<PermissionSet> permissionSets, OffsetDateTime createdAt) {
@@ -24,6 +39,7 @@ public class User {
         this.tenant = tenant;
         this.permissionSets = permissionSets;
         this.createdAt = createdAt;
+        this.verified = false;
     }
 
     public User() {
@@ -91,6 +107,14 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     public static List<String> mapPermissionsCodes(List<PermissionSet> permissionSets) {

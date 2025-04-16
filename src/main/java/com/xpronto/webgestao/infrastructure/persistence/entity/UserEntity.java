@@ -47,6 +47,10 @@ public class UserEntity implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "email_confirmed")
+    private boolean verified;
+
+    @Column(name = "password_hash")
     private String passwordHash;
 
     @ManyToOne

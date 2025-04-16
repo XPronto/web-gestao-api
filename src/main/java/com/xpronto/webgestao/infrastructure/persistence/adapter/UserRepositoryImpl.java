@@ -27,7 +27,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Boolean existsByEmail(String email) {
+    public boolean existsByEmail(String email) {
         return jpaUserRepository.findByEmail(email).isPresent();
     }
 
@@ -43,6 +43,11 @@ public class UserRepositoryImpl implements UserRepository {
         return jpaUserRepository.findById(id)
                 .map(UserMapper::toDomain)
                 .orElse(null);
+    }
+
+    @Override
+    public boolean existsByEmail(String email, UUID tenantId) {
+        return jpaUserRepository.findByEmail(email, tenantId).isPresent();
     }
 
 }

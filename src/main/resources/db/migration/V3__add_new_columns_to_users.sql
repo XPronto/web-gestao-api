@@ -1,0 +1,3 @@
+ALTER TABLE users
+    ADD COLUMN email_confirmed BOOLEAN DEFAULT FALSE,
+    ALTER COLUMN password_hash DROP NOT NULL;

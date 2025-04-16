@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     private ResponseEntity<ExceptionResponse> globalExceptionHandler(Exception exception, HttpServletRequest request) {
+        exception.printStackTrace();
         var internal = new InternalException("An unexpected error occurred.");
 
         return ResponseEntity.status(500).body(internal.mapToResponse(request.getRequestURI()));
