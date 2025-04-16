@@ -25,6 +25,11 @@
     "description": "JWT refresh token expiration (IN DAYS)."
   },
   {
+    "name": "api.api-keys.web-gestao-api-key",
+    "type": "java.lang.String",
+    "description": "API KEY to protect public routes."
+  },
+  {
     "name": "api.jwt.invite-token.secret",
     "type": "java.lang.String",
     "description": "JWT invite token secret."

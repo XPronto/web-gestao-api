@@ -45,6 +45,7 @@ api:
     client-url: ${CLIENT_URL}
     api-keys:
         location-iq-api-key: ${LOCATION_IQ_API_KEY:test}
+        web-gestao-api-key: ${API_KEY:dev-test-key}
     jwt:
         access-token:
             secret: ${JWT_ACCESS_TOKEN_SECRET:access-secret}
