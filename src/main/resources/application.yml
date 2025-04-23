@@ -30,10 +30,10 @@ spring:
                         error-decoder: com.xpronto.webgestao.infrastructure.config.integrations.IntegrationsErrorDecoder
 
     mail:
-        host: ${MAIL_HOST}
-        port: ${MAIL_PORT}
-        username: ${MAIL_USERNAME}
-        password: ${MAIL_PASSWORD}
+        host: ${MAIL_HOST:localhost}
+        port: ${MAIL_PORT:8080}
+        username: ${MAIL_USERNAME:test}
+        password: ${MAIL_PASSWORD:test}
         properties:
             mail:
                 smtp:
@@ -42,7 +42,7 @@ spring:
                         enable: true
 
 api:
-    client-url: ${CLIENT_URL}
+    client-url: ${CLIENT_URL:http://localhost:3000}
     api-keys:
         location-iq-api-key: ${LOCATION_IQ_API_KEY:test}
         web-gestao-api-key: ${API_KEY:dev-test-key}
