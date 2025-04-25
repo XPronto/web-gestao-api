@@ -1,5 +1,7 @@
 package com.xpronto.webgestao.infrastructure.persistence.adapter;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
 import com.xpronto.webgestao.domain.model.Tenant;
@@ -27,6 +29,13 @@ public class TenantRepositoryImpl implements TenantRepository {
     @Override
     public boolean existsByDocument(String document) {
         return jpaTenantRepository.findByDocument(document).isPresent();
+    }
+
+    @Override
+    public Tenant findById(UUID id) {
+        return jpaTenantRepository.findById(id)
+                .map(TenantMapper::toDomain)
+                .orElse(null);
     }
 
 }

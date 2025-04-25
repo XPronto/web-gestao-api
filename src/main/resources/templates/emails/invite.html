@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Convite para ativar sua conta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .header img {
+            height: 40px;
+        }
+
+        .title {
+            color: #333333;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .text {
+            color: #555555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #999999;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="#" alt="Logo da Plataforma">
+    </div>
+
+    <div class="title">Você foi convidado para acessar a plataforma</div>
+
+    <p class="text">Olá, <strong th:text="${name}">usuário</strong>!</p>
+
+    <p class="text">
+        Você foi adicionado à plataforma e agora pode criar sua senha para ativar sua conta.
+        Clique no botão abaixo para finalizar seu cadastro.
+    </p>
+
+    <div style="text-align: center;">
+        <a th:href="${activationLink}" class="button">Ativar Conta</a>
+    </div>
+
+    <p class="text">Esse link expirará em 10 minutos. Caso você não tenha solicitado acesso, ignore este e-mail.</p>
+
+    <div class="footer">
+        © 2025 XPronto — Todos os direitos reservados.<br>
+        Suporte: <a href="mailto:suporte@xpronto.com.br">suporte@xpronto.com.br</a>
+    </div>
+</div>
+
+</body>
+</html>

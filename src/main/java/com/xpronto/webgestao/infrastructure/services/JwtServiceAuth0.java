@@ -3,6 +3,7 @@ package com.xpronto.webgestao.infrastructure.services;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,32 +36,52 @@ public class JwtServiceAuth0 implements JwtService {
     @Value("${api.jwt.refresh-token.expiration}")
     private int refreshTokenExpiration;
 
+    @Value("${api.jwt.invite-token.secret}")
+    private String inviteTokenSecret;
+
+    @Value("${api.jwt.invite-token.expiration}")
+    private int inviteTokenExpiration;
+
     private final String issuer = "xPronto_api";
 
     @Override
-    public Tokens signAuthTokens(User user) {
+    public Tokens signAuthTokens(User user) throws Exception {
         String accessToken = signAccessToken(user);
         String refreshToken = signRefreshToken(user);
 
         return new Tokens(accessToken, refreshToken);
     }
 
-    private String signAccessToken(User user) {
+    @Override
+    public String signInviteToken(User user) throws Exception {
+        return JWT.create()
+                .withIssuer(issuer)
+                .withIssuedAt(new Date())
+                .withHeader(genHeaders(TokenType.INVITE_TOKEN))
+                .withSubject(user.getId().toString())
+                .withClaim("tenant_id", user.getTenant().getId().toString())
+                .withExpiresAt(genExpiresAt(inviteTokenExpiration, ChronoUnit.MINUTES))
+                .sign(algorithm(inviteTokenSecret));
+    }
+
+    private String signAccessToken(User user) throws Exception {
         return JWT.create()
                 .withSubject(user.getId().toString())
                 .withIssuer(issuer)
                 .withIssuedAt(new Date())
+                .withHeader(genHeaders(TokenType.ACCESS_TOKEN))
                 .withClaim("tenant_id", user.getTenant().getId().toString())
                 .withClaim("permissions", User.mapPermissionsCodes(user.getPermissionSets()))
                 .withExpiresAt(genExpiresAt(accessTokenExpiration, ChronoUnit.MINUTES))
                 .sign(algorithm(accessTokenSecret));
     }
 
-    private String signRefreshToken(User user) {
+    private String signRefreshToken(User user) throws Exception {
         return JWT.create()
                 .withSubject(user.getId().toString())
                 .withIssuer(issuer)
                 .withIssuedAt(new Date())
+                .withHeader(genHeaders(TokenType.REFRESH_TOKEN))
                 .withExpiresAt(genExpiresAt(refreshTokenExpiration, ChronoUnit.DAYS))
                 .sign(algorithm(refreshTokenSecret));
     }
@@ -83,6 +104,9 @@ public class JwtServiceAuth0 implements JwtService {
             case REFRESH_TOKEN:
                 return verifyRefreshToken(token);
 
+            case INVITE_TOKEN:
+                return verifyInviteToken(token);
+
             default:
                 throw new Exception("Invalid token type.");
         }
@@ -96,6 +120,11 @@ public class JwtServiceAuth0 implements JwtService {
                     .build();
 
             DecodedJWT decodedJWT = verifier.verify(token);
+
+            String type = decodedJWT.getHeaderClaim("typ").asString();
+
+            if (type == null || !type.equals("AC+JWT"))
+                throw new JWTVerificationException("Invalid token type.");
 
             Map<String, Claim> claims = decodedJWT.getClaims();
             String sub = decodedJWT.getSubject();
@@ -117,9 +146,57 @@ public class JwtServiceAuth0 implements JwtService {
 
             DecodedJWT decodedJWT = verifier.verify(token);
 
+            String type = decodedJWT.getHeaderClaim("typ").asString();
+
+            if (type == null || !type.equals("RF+JWT"))
+                throw new JWTVerificationException("Invalid token type.");
+
             return new UserPayload(decodedJWT.getSubject(), null, null);
         } catch (JWTVerificationException exception) {
             return null;
         }
+    }
+
+    private UserPayload verifyInviteToken(String token) {
+        try {
+            JWTVerifier verifier = JWT
+                    .require(algorithm(inviteTokenSecret))
+                    .withIssuer(issuer)
+                    .build();
+
+            DecodedJWT decodedJWT = verifier.verify(token);
+
+            String type = decodedJWT.getHeaderClaim("typ").asString();
+
+            if (type == null || !type.equals("IN+JWT"))
+                throw new JWTVerificationException("Invalid token type.");
+
+            return new UserPayload(decodedJWT.getSubject(), decodedJWT.getClaim("tenant_id").asString(), null);
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
+    }
+
+    private Map<String, Object> genHeaders(TokenType tokenType) throws Exception {
+        Map<String, Object> headers = new HashMap<String, Object>();
+
+        switch (tokenType) {
+            case ACCESS_TOKEN:
+                headers.put("typ", "AC+JWT");
+                break;
+
+            case REFRESH_TOKEN:
+                headers.put("typ", "RF+JWT");
+                break;
+
+            case INVITE_TOKEN:
+                headers.put("typ", "IN+JWT");
+                break;
+
+            default:
+                throw new Exception("Invalid token type.");
+        }
+
+        return headers;
     }
 }

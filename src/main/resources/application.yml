@@ -29,7 +29,20 @@ spring:
                         url: ${LOCATION_IQ_API_URL:test}
                         error-decoder: com.xpronto.webgestao.infrastructure.config.integrations.IntegrationsErrorDecoder
 
+    mail:
+        host: ${MAIL_HOST:localhost}
+        port: ${MAIL_PORT:8080}
+        username: ${MAIL_USERNAME:test}
+        password: ${MAIL_PASSWORD:test}
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+
 api:
+    client-url: ${CLIENT_URL:http://localhost:3000}
     api-keys:
         location-iq-api-key: ${LOCATION_IQ_API_KEY:test}
         web-gestao-api-key: ${API_KEY:dev-test-key}
@@ -40,3 +53,6 @@ api:
         refresh-token:
             secret: ${JWT_REFRESH_TOKEN_SECRET:refresh-secret}
             expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:7}
+        invite-token:
+            secret: ${JWT_INVITE_TOKEN_SECRET:invite-secret}
+            expiration: ${JWT_INVITE_TOKEN_EXPIRATION:10}

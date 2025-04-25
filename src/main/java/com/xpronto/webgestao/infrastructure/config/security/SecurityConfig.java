@@ -23,6 +23,7 @@ public class SecurityConfig {
     private final AuthenticationFilter authenticationFilter;
     private final RefreshTokenAuthenticationFilter refreshTokenAuthenticationFilter;
     private final ApiKeyAuthFilter apiKeyAuthFilter;
+    private final InviteTokenAuthFilter inviteTokenAuthFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
@@ -38,6 +39,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .addFilterBefore(refreshTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(inviteTokenAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(apiKeyAuthFilter, AuthenticationFilter.class);
 
         return httpSecurity.build();

@@ -17,6 +17,7 @@ public class UserMapper {
                 entity.getFirstName(),
                 entity.getLastName(),
                 entity.getEmail(),
+                entity.isVerified(),
                 entity.getPasswordHash(),
                 TenantMapper.toDomain(entity.getTenant()),
                 permissionSets,
@@ -29,6 +30,7 @@ public class UserMapper {
         entity.setFirstName(user.getFirtstName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
+        entity.setVerified(user.isVerified());
         entity.setPasswordHash(user.getPasswordHash());
         entity.setTenant(TenantMapper.toEntity(user.getTenant()));
         entity.setPermissionSets(user.getPermissionSets().stream()

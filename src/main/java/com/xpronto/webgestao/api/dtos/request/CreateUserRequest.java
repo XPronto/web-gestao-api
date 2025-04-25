@@ -1,9 +1,10 @@
-package com.xpronto.webgestao.api.dtos;
+package com.xpronto.webgestao.api.dtos.request;
 
-import com.xpronto.webgestao.api.dtos.annotation.ValidPassword;
+import java.util.UUID;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDTO {
+public class CreateUserRequest {
     @NotBlank
     private String firstName;
 
@@ -22,7 +23,6 @@ public class UserDTO {
     @Email
     private String email;
 
-    @NotBlank
-    @ValidPassword
-    private String password;
+    @NotNull
+    private UUID tenantId;
 }
