@@ -10,6 +10,7 @@ import com.xpronto.webgestao.domain.repositories.UserRepository;
 import com.xpronto.webgestao.domain.services.EncoderService;
 import com.xpronto.webgestao.domain.services.email.EmailService;
 import com.xpronto.webgestao.domain.services.jwt.JwtService;
+import com.xpronto.webgestao.domain.usecases.GetLoggedUserUseCase.GetLoggedUseCase;
 import com.xpronto.webgestao.domain.usecases.confirmuser.ConfirmUserUseCase;
 import com.xpronto.webgestao.domain.usecases.createtenant.CreateTenantUseCase;
 import com.xpronto.webgestao.domain.usecases.createuser.CreateUserUseCase;
@@ -47,5 +48,9 @@ public class ApplicationConfig {
     @Bean
     ConfirmUserUseCase confirmUserUseCase(UserRepository userRepository, JwtService jwtService, EncoderService encoderService) {
         return new ConfirmUserUseCase(userRepository, jwtService, encoderService);
+    }
+    @Bean
+    GetLoggedUseCase getLoggedUserUseCase(UserRepository userRepository) {
+        return new GetLoggedUseCase(userRepository);
     }
 }
